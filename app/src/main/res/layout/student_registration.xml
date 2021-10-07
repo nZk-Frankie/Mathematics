@@ -9,6 +9,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <ImageView
+            android:id="@+id/imageViewStudentPicture"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView5"
+            tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
         <TextView
             android:id="@+id/textView5"
             android:layout_width="wrap_content"
@@ -181,17 +192,6 @@
             android:text="Register Student"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/recyclerViewPhoneNumber" />
-
-        <ImageView
-            android:id="@+id/imageViewStudentPicture"
-            android:layout_width="110dp"
-            android:layout_height="110dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:visibility="visible"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView5"
-            tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

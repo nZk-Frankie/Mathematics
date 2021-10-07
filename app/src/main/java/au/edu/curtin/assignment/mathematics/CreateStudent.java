@@ -1,9 +1,16 @@
 package au.edu.curtin.assignment.mathematics;
 
 import android.annotation.SuppressLint;
+import android.content.ActivityNotFoundException;
+import android.content.ClipData;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -19,14 +26,29 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.validator.routines.EmailValidator;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.security.acl.AclEntry;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.net.ssl.HttpsURLConnection;
 
 import au.edu.curtin.assignment.mathematics.db.PHONE;
 
@@ -42,6 +64,12 @@ public class CreateStudent extends AppCompatActivity {
     private List<String> emailList = new ArrayList<>();
     private Bitmap studentImageBitmap;
     private List<String> test = new ArrayList<>();
+
+
+    //constant
+    private static final int REQUEST_PHOTO_FROM_CAMERA = 1;
+    private static final int REQUEST_PHOTO_FROM_FILE = 2;
+    private static final int REQUEST_PHOTO_FROM_PIXBAY = 3;
 
 
     @Override
@@ -70,17 +98,7 @@ public class CreateStudent extends AppCompatActivity {
         studentEmailList = (RecyclerView) findViewById(R.id.recyclerViewStudentEmail);
         studentPhoneList  = (RecyclerView) findViewById(R.id.recyclerViewPhoneNumber);
 
-        test.add("1");
-        test.add("2");
-        test.add("3");
-        test.add("4");
-        test.add("5");
-        test.add("6");
-        test.add("7");
-        test.add("8");
-        test.add("9");
-        test.add("10");
-
+        IMAGE.setImageResource(R.drawable.images);
 
         addStudent.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,6 +173,20 @@ public class CreateStudent extends AppCompatActivity {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         Toast.makeText(getApplicationContext(),menuItem.getTitle(),Toast.LENGTH_SHORT).show();
+                        if(menuItem.getTitle().equals("Take A Photo"))
+                        {
+                            setStudentImageFromCamera();
+                        }
+                        else if (menuItem.getTitle().equals("Import from file"))
+                        {
+                            Intent getFromFile = new Intent(Intent.ACTION_GET_CONTENT);
+                            getFromFile.setType("image/*");
+                            startActivityForResult(getFromFile,REQUEST_PHOTO_FROM_FILE);
+
+                        }
+                        else if (menuItem.getTitle().equals("Import from PixBay"))
+                        {
+                        }
                         return true;
                     }
                 });
@@ -181,19 +213,42 @@ public class CreateStudent extends AppCompatActivity {
         return EmailValidator.getInstance().isValid(email);
     }
 
-    private void setStudentImageFromCamera(ImageView image)
+    private void setStudentImageFromCamera()
+    {
+        Intent openCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        try {
+            startActivityForResult(openCamera,REQUEST_PHOTO_FROM_CAMERA);
+        }
+        catch (ActivityNotFoundException ex)
+        {
+
+        }
+    }
+
+
+    private void setStudentImageFromPixBay()
     {
 
     }
 
-    private void setStudentImageFromFIles(ImageView image)
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-
-    }
-
-    private void setStudentImageFromPixBay(ImageView image)
-    {
-
+        super.onActivityResult(requestCode,resultCode,data);
+        Log.d("81781", "onActivityResult: "+requestCode);
+        if (requestCode == REQUEST_PHOTO_FROM_CAMERA && resultCode == RESULT_OK)
+        {
+            studentImageBitmap = (Bitmap) data.getExtras().get("data");
+            IMAGE.setImageBitmap(studentImageBitmap);
+        }
+        else if (requestCode == REQUEST_PHOTO_FROM_FILE && resultCode == RESULT_OK)
+        {
+            if (data!= null)
+            {
+                Uri uriImage = data.getData();
+                IMAGE.setImageURI(uriImage);
+            }
+        }
     }
 
     private String getStringfromEditText(EditText text)
