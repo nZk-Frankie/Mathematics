@@ -3,6 +3,8 @@ package au.edu.curtin.assignment.mathematics.model;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.database.Cursor;
+import android.database.CursorWrapper;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.util.Log;
@@ -11,6 +13,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import au.edu.curtin.assignment.mathematics.db.DB_HELPER;
@@ -34,6 +37,32 @@ public class Databases {
 
     public Databases()
     {
+    }
+
+    public Student findStudentWithID(String ID)
+    {
+        Student resultStudent = null;
+        StudentCursor studentCursor = new StudentCursor(
+                this.database.query(StudentSchema.StudentTable.DBNAME,
+                        null,
+                        StudentSchema.StudentTable.Cols.ID+" = ?",
+                        new String[]{ID},
+                        null,
+                        null,
+                        StudentSchema.StudentTable.Cols.FIRST_NAME+" ASC")
+        );
+        try {
+            studentCursor.moveToFirst();
+            if (studentCursor.getCount() == 1)
+            {
+                resultStudent = studentCursor.getStudent();
+                resultStudent.setEmailList(getEmail(ID));
+                resultStudent.setPhoneNumberList(phoneList(ID));
+            }
+        }finally {
+            studentCursor.close();
+        }
+        return resultStudent;
     }
 
     public void createDatabase(Context context)
@@ -87,6 +116,111 @@ public class Databases {
         }
     }
 
+    public void removeStudent(String uniqueID){
+        String [] whereValue = {uniqueID};
+        database.delete(StudentSchema.StudentTable.DBNAME,StudentSchema.StudentTable.Cols.ID+" = ?",whereValue);
+        //we also need to remove all the phone number and email
+        removeStudentPhoneAndEmail(whereValue);
+    }
+
+    public void removeStudentPhoneAndEmail(String [] whereValue)
+    {
+        database.delete(EMAIL.EMAIL_LIST.DBNAME, EMAIL.EMAIL_LIST.Cols.REFERENCE_KEY+" = ?",whereValue);
+        database.delete(PHONE.PHONE_LIST.DBNAME, PHONE.PHONE_LIST.Cols.REFERENCE_KEY+" = ?",whereValue);
+    }
+
+    public List<Student> loadStudentObject()
+    {
+        List<Student> studentList = new ArrayList<>();
+        if (!studentList.isEmpty())
+        {
+            studentList.clear();
+        }
+        StudentCursor studentCursor = new StudentCursor(
+                this.database.query(StudentSchema.StudentTable.DBNAME,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        StudentSchema.StudentTable.Cols.FIRST_NAME+" ASC")
+        );
+        try{
+            studentCursor.moveToFirst();
+            while(!studentCursor.isAfterLast())
+            {
+                Student student = studentCursor.getStudent();
+                //student.setEmailList(getEmail(student.getID()));
+                //student.setPhoneNumberList(phoneList(student.getID()));
+                studentList.add(student);
+                studentCursor.moveToNext();
+            }
+        }finally {
+            studentCursor.close();
+        }
+
+        return studentList;
+    }
+
+    private List<String> phoneList(String studentID)
+    {
+        List<String> phoneList = new ArrayList<>();
+        if (!phoneList.isEmpty()){
+            phoneList.clear();
+        }
+
+        PHONECursor phoneCursor = new PHONECursor(
+                this.database.query(PHONE.PHONE_LIST.DBNAME,
+                        null,
+                        PHONE.PHONE_LIST.Cols.REFERENCE_KEY +" = ?",
+                        new String[]{studentID},
+                        null,
+                        null,
+                        null)
+        );
+        try{
+            phoneCursor.moveToFirst();
+            while (!phoneCursor.isAfterLast())
+            {
+                phoneList.add(phoneCursor.getPhone());
+                phoneCursor.moveToNext();
+            }
+        }finally {
+            phoneCursor.close();
+        }
+        return phoneList;
+    }
+
+    private List<String> getEmail(String studentID)
+    {
+        List<String> emailList = new ArrayList<>();
+        if (!emailList.isEmpty())
+        {
+            emailList.clear();
+        }
+        EMAILCursor emailCursor = new EMAILCursor(
+                this.database.query(PHONE.PHONE_LIST.DBNAME,
+                        null,
+                        EMAIL.EMAIL_LIST.Cols.REFERENCE_KEY +" = ?",
+                        new String[]{studentID},
+                        null,
+                        null,
+                        null)
+        );
+        try{
+            emailCursor.moveToFirst();
+            while (!emailCursor.isAfterLast())
+            {
+                emailList.add(emailCursor.getEmail());
+                emailCursor.moveToNext();
+            }
+        }finally {
+            emailCursor.close();
+        }
+
+        return emailList;
+    }
+
     private void saveImage(Bitmap Image, String ID,Context context)
     {
         ContextWrapper contextWrapper = new ContextWrapper(context);
@@ -111,4 +245,46 @@ public class Databases {
             }
         }
     }
+
+    private class StudentCursor extends CursorWrapper{
+        public StudentCursor (Cursor newCursor)
+        {
+            super(newCursor);
+        }
+
+        public Student getStudent()
+        {
+            String ID = getString(getColumnIndex(StudentSchema.StudentTable.Cols.ID));
+            String firstName = getString(getColumnIndex(StudentSchema.StudentTable.Cols.FIRST_NAME));
+            String lastName =  getString(getColumnIndex(StudentSchema.StudentTable.Cols.LAST_NAME));
+            String ImageName = getString(getColumnIndex(StudentSchema.StudentTable.Cols.IMAGE));
+
+            return new Student(ID,firstName,lastName,ImageName);
+        }
+    }
+
+    private class EMAILCursor extends CursorWrapper{
+        public EMAILCursor (Cursor cursor)
+        {
+            super(cursor);
+        }
+
+        public String getEmail()
+        {
+            return getString(getColumnIndex(EMAIL.EMAIL_LIST.Cols.EMAIL));
+        }
+    }
+
+    private class PHONECursor extends CursorWrapper{
+        public PHONECursor (Cursor cursor)
+        {
+            super(cursor);
+        }
+
+        public String getPhone()
+        {
+            return getString(getColumnIndex(PHONE.PHONE_LIST.Cols.PHONE_NUMBER));
+        }
+    }
+
 }

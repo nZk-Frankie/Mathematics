@@ -25,23 +25,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="74dp"
-            android:text="Creating A New Student"
+            android:layout_marginEnd="104dp"
+            android:text="Student Details"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/importStudentTeacherCreate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:minHeight="48dp"
-            android:text="Import"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/backFromStudentViewMore" />
 
         <Button
             android:id="@+id/backFromStudentViewMore"
@@ -186,10 +175,10 @@
             android:id="@+id/saveInfoStudentViewMore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="112dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginStart="108dp"
+            android:layout_marginTop="52dp"
             android:minHeight="48dp"
-            android:text="Register Student"
+            android:text="Save Information"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/RVPhoneViewMore" />
 

@@ -3,15 +3,12 @@ package au.edu.curtin.assignment.mathematics;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
-import android.content.ClipData;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
@@ -23,7 +20,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,33 +28,19 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.validator.routines.EmailValidator;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.security.acl.AclEntry;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.net.ssl.HttpsURLConnection;
-
-import au.edu.curtin.assignment.mathematics.db.PHONE;
 import au.edu.curtin.assignment.mathematics.model.Databases;
 import au.edu.curtin.assignment.mathematics.model.Student;
 
@@ -87,8 +69,8 @@ public class CreateStudent extends AppCompatActivity {
 
     private void testData()
     {
-        firstName.setText("A");
-        lastName.setText("B");
+        firstName.setText("Ayame");
+        lastName.setText("Naikiri");
 
         emailList.add("dicky@gmail.com");
         emailList.add("dicky1@gmail.com");
@@ -119,25 +101,25 @@ public class CreateStudent extends AppCompatActivity {
         super.onCreate(x);
         setContentView(R.layout.student_registration);
 
-        back = (Button) findViewById(R.id.backFromCreate);
+        back = (Button) findViewById(R.id.backFromStudentViewMore);
         importButton = (Button) findViewById(R.id.importStudentTeacherCreate);
-        upload = (Button) findViewById(R.id.uploadStudentImageButton);
+        upload = (Button) findViewById(R.id.changePictureButton);
 
-        addEmail = (Button) findViewById(R.id.addEmail);
-        addPhone = (Button) findViewById(R.id.addStudentPhone);
-        addStudent = (Button) findViewById(R.id.addStudent);
-
-
-        firstName = (EditText) findViewById(R.id.editTextStudentFirstName);
-        lastName = (EditText) findViewById(R.id.editTextStudentLastName);
-        email = (EditText) findViewById(R.id.editTextStudentEmail);
-        phone = (EditText) findViewById(R.id.editTextPhoneNumber);
-
-        IMAGE = (ImageView) findViewById(R.id.imageViewStudentPicture);
+        addEmail = (Button) findViewById(R.id.addEmailButtonViewMoreStudent);
+        addPhone = (Button) findViewById(R.id.addPhoneViewMore);
+        addStudent = (Button) findViewById(R.id.saveInfoStudentViewMore);
 
 
-        studentEmailList = (RecyclerView) findViewById(R.id.recyclerViewStudentEmail);
-        studentPhoneList  = (RecyclerView) findViewById(R.id.recyclerViewPhoneNumber);
+        firstName = (EditText) findViewById(R.id.editTextViewMoreStudentFirstName);
+        lastName = (EditText) findViewById(R.id.editTextViewMoreStudentLastName);
+        email = (EditText) findViewById(R.id.editTextViewMoreStudentEmail);
+        phone = (EditText) findViewById(R.id.editTextViewMoreStudentPhone);
+
+        IMAGE = (ImageView) findViewById(R.id.imageViewStudentViewMore);
+
+
+        studentEmailList = (RecyclerView) findViewById(R.id.RVViewMoreEmail);
+        studentPhoneList  = (RecyclerView) findViewById(R.id.RVPhoneViewMore);
 
         IMAGE.setImageResource(R.drawable.images);
 
@@ -544,7 +526,7 @@ public class CreateStudent extends AppCompatActivity {
                 public void onClick(View view) {
                     data.remove(position);
                     notifyItemChanged(position);
-                    notifyItemRangeChanged(position,data.size());
+                    notifyItemRangeChanged(0,data.size());
                     notifyDataSetChanged();
                 }
             });

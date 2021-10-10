@@ -1,13 +1,20 @@
 package au.edu.curtin.assignment.mathematics.model;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.widget.ImageView;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.Serializable;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Student {
+public class Student{
     public String ID;
     String firstName;
     String lastName;
@@ -21,6 +28,30 @@ public class Student {
         this.ID = randomDigit();
         this.firstName = firstName;
         this.lastName = lastName;
+    }
+
+    public Student (String ID, String firstName, String LastName, String Image)
+    {
+        this.ID = ID;
+        this.firstName = firstName;
+        this.lastName = LastName;
+        this.studentImage = loadImage(Image);
+
+    }
+
+    private Bitmap loadImage(String imageName)
+    {
+        Bitmap studentImage=null;
+        String ImagePath = "data/data/au.edu.curtin.assignment.mathematics/app_studentImageDirectory/";
+        try{
+            File imageFile = new File(ImagePath,imageName);
+            studentImage = BitmapFactory.decodeStream(new FileInputStream(imageFile));
+        }catch (IOException ex)
+        {
+            ex.printStackTrace();
+        }
+
+        return studentImage;
     }
 
     private String randomDigit()
@@ -69,4 +100,5 @@ public class Student {
     public List<String> getEmailList() {
         return emailList;
     }
+
 }

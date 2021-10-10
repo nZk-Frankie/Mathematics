@@ -191,7 +191,11 @@ public class PixbayDownloader extends AppCompatActivity {
                                                imageGridViewer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                                    @Override
                                                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                                       Toast.makeText(getApplicationContext(), "Position: "+i, Toast.LENGTH_SHORT).show();
+                                                       saveBitmap(pictureList.get(i),"pixbay.png");
+
+                                                       Intent goback = new Intent(PixbayDownloader.this,CreateStudent.class);
+                                                       setResult(Activity.RESULT_OK,goback);
+                                                       finish();
                                                    }
                                                });
                                            }

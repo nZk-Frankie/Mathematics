@@ -41,6 +41,9 @@ public class TeacherPage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                Intent proceed= new Intent(TeacherPage.this,ViewStudent.class);
+                startActivity(proceed);
+
             }
         });
 

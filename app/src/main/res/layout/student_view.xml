@@ -27,11 +27,10 @@
         app:layout_constraintTop_toBottomOf="@+id/backfromStudentView" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/studentViewRV"
         android:layout_width="0dp"
         android:layout_height="638dp"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
