@@ -25,6 +25,7 @@
         <activity android:name=".TeacherLanding"/>
         <activity android:name=".TeacherPage"/>
         <activity android:name=".CreateStudent"/>
+        <activity android:name=".PixbayDownloader"/>
         <activity
             android:name=".MainActivity"
             android:exported="true">

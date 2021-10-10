@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Student {
-    static String ID;
+    public String ID;
     String firstName;
     String lastName;
     List<String> phoneNumberList = new ArrayList<>();
@@ -38,10 +38,6 @@ public class Student {
         this.emailList = emailList;
     }
 
-    public static void setID(String ID) {
-        Student.ID = ID;
-    }
-
     public void setStudentImage(Bitmap studentImage) {
         this.studentImage = studentImage;
     }
@@ -54,7 +50,7 @@ public class Student {
         return studentImage;
     }
 
-    public static String getID() {
+    public String getID() {
         return ID;
     }
 

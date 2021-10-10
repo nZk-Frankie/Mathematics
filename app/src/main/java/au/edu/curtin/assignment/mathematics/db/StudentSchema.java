@@ -7,8 +7,8 @@ public class StudentSchema {
         public static class Cols
         {
             public static final String ID = "id";
-            public static final String FIRST_NAME = "name";
-            public static final String LAST_NAME = "email";
+            public static final String FIRST_NAME = "firstname";
+            public static final String LAST_NAME = "lastName";
             public static final String IMAGE = "IMAGE";
         }
     }

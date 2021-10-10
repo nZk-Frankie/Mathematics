@@ -20,7 +20,7 @@ public class DB_HELPER extends SQLiteOpenHelper {
                 StudentSchema.StudentTable.Cols.ID + " TEXT," +
                 StudentSchema.StudentTable.Cols.FIRST_NAME + " TEXT," +
                 StudentSchema.StudentTable.Cols.LAST_NAME+ " TEXT," +
-                StudentSchema.StudentTable.Cols.IMAGE+ " BLOB)");
+                StudentSchema.StudentTable.Cols.IMAGE+ " TEXT)");
 
         sqLiteDatabase.execSQL("CREATE TABLE "+ EMAIL.EMAIL_LIST.DBNAME + "(" +
                 EMAIL.EMAIL_LIST.Cols.REFERENCE_KEY + " TEXT, " +

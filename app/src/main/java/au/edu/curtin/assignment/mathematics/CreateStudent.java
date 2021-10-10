@@ -1,15 +1,19 @@
 package au.edu.curtin.assignment.mathematics;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,6 +30,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -39,6 +45,8 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -51,6 +59,8 @@ import java.util.List;
 import javax.net.ssl.HttpsURLConnection;
 
 import au.edu.curtin.assignment.mathematics.db.PHONE;
+import au.edu.curtin.assignment.mathematics.model.Databases;
+import au.edu.curtin.assignment.mathematics.model.Student;
 
 public class CreateStudent extends AppCompatActivity {
 
@@ -70,7 +80,38 @@ public class CreateStudent extends AppCompatActivity {
     private static final int REQUEST_PHOTO_FROM_CAMERA = 1;
     private static final int REQUEST_PHOTO_FROM_FILE = 2;
     private static final int REQUEST_PHOTO_FROM_PIXBAY = 3;
+    private static final int REQUEST_CONTACT = 4;
 
+    private int ID;
+    String DISPLAYNAME, EMAIL, PHONE;
+
+    private void testData()
+    {
+        firstName.setText("A");
+        lastName.setText("B");
+
+        emailList.add("dicky@gmail.com");
+        emailList.add("dicky1@gmail.com");
+        emailList.add("dicky2@gmail.com");
+        emailList.add("dicky3@gmail.com");
+        emailList.add("dicky4@gmail.com");
+
+        phoneList.add("0431175611");
+        phoneList.add("0431175614");
+        phoneList.add("04311754511");
+        phoneList.add("0431111611");
+        phoneList.add("0431275611");
+
+        EMAILItemHolderAdapter emailItemHolderAdapter = new EMAILItemHolderAdapter(emailList);
+        studentEmailList.setLayoutManager(new LinearLayoutManager(CreateStudent.this));
+        studentEmailList.setAdapter(emailItemHolderAdapter);
+
+        PHONEADAPTER phoneadapter = new PHONEADAPTER(phoneList);
+        studentPhoneList.setLayoutManager(new LinearLayoutManager(CreateStudent.this));
+        studentPhoneList.setAdapter(phoneadapter);
+
+
+    }
 
     @Override
     protected void onCreate(Bundle x)
@@ -100,11 +141,28 @@ public class CreateStudent extends AppCompatActivity {
 
         IMAGE.setImageResource(R.drawable.images);
 
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions(CreateStudent.this,new String[]{Manifest.permission.READ_CONTACTS},REQUEST_CONTACT);
+        }
+
+        testData();
+
         addStudent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 studentFirstName = getStringfromEditText(firstName);
                 studentLastName = getStringfromEditText(lastName);
+
+                Student newStudent = new Student(studentFirstName,studentLastName);
+                newStudent.setStudentImage(studentImageBitmap);
+                newStudent.setEmailList(emailList);
+                newStudent.setPhoneNumberList(phoneList);
+
+                Databases.getInstance().addStudenttoDatabase(newStudent,getApplicationContext());
+
+                Intent goBack = new Intent(CreateStudent.this,TeacherPage.class);
+                startActivity(goBack);
             }
         });
 
@@ -142,7 +200,7 @@ public class CreateStudent extends AppCompatActivity {
                         if (!phoneList.contains(studentPhoneNumber))
                         {
                             phoneList.add(studentPhoneNumber);
-                            PHONEADAPTER phoneadapter = new PHONEADAPTER(test);
+                            PHONEADAPTER phoneadapter = new PHONEADAPTER(phoneList);
                             studentPhoneList.setLayoutManager(new LinearLayoutManager(CreateStudent.this));
                             studentPhoneList.setAdapter(phoneadapter);
                         }
@@ -186,12 +244,23 @@ public class CreateStudent extends AppCompatActivity {
                         }
                         else if (menuItem.getTitle().equals("Import from PixBay"))
                         {
+                            Intent intent = new Intent(CreateStudent.this,PixbayDownloader.class);
+                            startActivityForResult(intent,REQUEST_PHOTO_FROM_PIXBAY);
                         }
                         return true;
                     }
                 });
 
                 popupMenu.show();
+            }
+        });
+
+        importButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent contactIntent  = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+                startActivityForResult(contactIntent,REQUEST_CONTACT);
+
             }
         });
 
@@ -246,9 +315,114 @@ public class CreateStudent extends AppCompatActivity {
             if (data!= null)
             {
                 Uri uriImage = data.getData();
+                try {
+                    studentImageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(),uriImage);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 IMAGE.setImageURI(uriImage);
             }
         }
+        else if (requestCode == REQUEST_PHOTO_FROM_PIXBAY && resultCode == RESULT_OK)
+        {
+            if (data!=null)
+            {
+                String imagePath = "data/data/au.edu.curtin.assignment.mathematics/app_pixbayImages/";
+                try {
+                    File file = new File(imagePath,"pixbay.png");
+                    Bitmap image = BitmapFactory.decodeStream(new FileInputStream(file));
+                    studentImageBitmap = image;
+                    IMAGE.setImageBitmap(image);
+                }catch (FileNotFoundException ex)
+                {
+                    ex.printStackTrace();
+                }
+            }
+        }else if (requestCode == REQUEST_CONTACT && resultCode == RESULT_OK)
+        {
+            Uri contactUri = data.getData();
+            String [] queryFields = new String [] {
+                    ContactsContract.Contacts._ID,
+                    ContactsContract.Contacts.DISPLAY_NAME
+            };
+            Cursor cursor = getContentResolver().query(contactUri,queryFields,null,null,null);
+            try {
+                if (cursor.getCount()>0)
+                {
+                    cursor.moveToFirst();
+                    ID = cursor.getInt(0);
+                    DISPLAYNAME = cursor.getString(1);
+
+                }
+            }finally {
+                cursor.close();
+            }
+
+            Cursor emailAddress = getContentResolver().query(
+                    ContactsContract.CommonDataKinds.Email.CONTENT_URI,
+                    new String [] {ContactsContract.CommonDataKinds.Email.ADDRESS},
+                    ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = ?",
+                    new String [] {String.valueOf(ID)},
+                    null,
+                    null
+            );
+
+            try {
+                emailAddress.moveToFirst();
+                do {
+                    emailList.add(emailAddress.getString(0));
+                }while (emailAddress.moveToNext());
+            }finally {
+
+                EMAILItemHolderAdapter emailItemHolderAdapter = new EMAILItemHolderAdapter(emailList);
+                studentEmailList.setLayoutManager(new LinearLayoutManager(CreateStudent.this));
+                studentEmailList.setAdapter(emailItemHolderAdapter);
+                emailAddress.close();
+            }
+
+            Cursor phoneNumber = getContentResolver().query(
+                    ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                    new String[] {ContactsContract.CommonDataKinds.Phone.NUMBER},
+                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
+                    new String [] {String.valueOf(ID)},
+                    null,
+                    null
+            );
+
+            try {
+                Log.d("98", "onActivityResult: "+phoneNumber.getCount());
+                phoneNumber.moveToFirst();
+                do {
+                    phoneList.add(phoneNumber.getString(0));
+                }while (phoneNumber.moveToNext());
+            }
+            finally {
+                PHONEADAPTER phoneadapter = new PHONEADAPTER(phoneList);
+                studentPhoneList.setLayoutManager(new LinearLayoutManager(CreateStudent.this));
+                studentPhoneList.setAdapter(phoneadapter);
+                phoneNumber.close();
+            }
+
+            this.firstName.setText(SplitName(DISPLAYNAME)[0]);
+            this.lastName.setText(SplitName(DISPLAYNAME)[1]);
+        }
+    }
+
+    public void onRequestPermissionResult(int requestCode, @NonNull String [] permissions, @NonNull int [] grantResults_)
+    {
+        super.onRequestPermissionsResult(requestCode,permissions,grantResults_);
+        if (requestCode == REQUEST_CONTACT)
+        {
+            if (grantResults_.length>0 && grantResults_[0]== PackageManager.PERMISSION_GRANTED)
+            {
+                Toast.makeText(getApplicationContext(),"Contact Reading permission GRANTED", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private String [] SplitName(String DISPLAYNAME)
+    {
+        return DISPLAYNAME.split("\\s+");
     }
 
     private String getStringfromEditText(EditText text)
