@@ -28,6 +28,9 @@
         <activity android:name=".PixbayDownloader"/>
         <activity android:name=".ViewStudent"/>
         <activity android:name=".StudentViewMore"/>
+        <activity android:name=".PixbayDownloaderForUpdate"/>
+        <activity android:name=".StudentLanding"/>
+        <activity android:name=".StudentTestPage"/>
         <activity
             android:name=".MainActivity"
             android:exported="true">

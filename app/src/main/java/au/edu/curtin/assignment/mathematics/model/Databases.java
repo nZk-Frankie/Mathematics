@@ -116,6 +116,25 @@ public class Databases {
         }
     }
 
+    public void editStudent(Student e, Context context)
+    {
+        ContentValues newStudent = new ContentValues();
+        newStudent.put(StudentSchema.StudentTable.Cols.FIRST_NAME,e.getFirstName());
+        newStudent.put(StudentSchema.StudentTable.Cols.LAST_NAME,e.getLastName());
+        newStudent.put(StudentSchema.StudentTable.Cols.IMAGE,e.getID()+".jpg");
+
+        //remove all entry of phonenumber and email
+        removeStudentPhoneAndEmail(new String[]{e.getID()});
+        //add them back in
+        addPhonetoDatabase(e.getPhoneNumberList(),e.getID());
+        addEmailtoDatabase(e.getEmailList(),e.getID());
+
+        String [] whereValue = new String[]{e.getID()};
+        database.update(StudentSchema.StudentTable.DBNAME,newStudent, StudentSchema.StudentTable.Cols.ID + " = ?",whereValue);
+
+        saveImage(e.getStudentImage(),e.getID()+".jpg",context);
+    }
+
     public void removeStudent(String uniqueID){
         String [] whereValue = {uniqueID};
         database.delete(StudentSchema.StudentTable.DBNAME,StudentSchema.StudentTable.Cols.ID+" = ?",whereValue);
@@ -150,8 +169,8 @@ public class Databases {
             while(!studentCursor.isAfterLast())
             {
                 Student student = studentCursor.getStudent();
-                //student.setEmailList(getEmail(student.getID()));
-                //student.setPhoneNumberList(phoneList(student.getID()));
+                student.setEmailList(getEmail(student.getID()));
+                student.setPhoneNumberList(phoneList(student.getID()));
                 studentList.add(student);
                 studentCursor.moveToNext();
             }
@@ -199,7 +218,7 @@ public class Databases {
             emailList.clear();
         }
         EMAILCursor emailCursor = new EMAILCursor(
-                this.database.query(PHONE.PHONE_LIST.DBNAME,
+                this.database.query(EMAIL.EMAIL_LIST.DBNAME,
                         null,
                         EMAIL.EMAIL_LIST.Cols.REFERENCE_KEY +" = ?",
                         new String[]{studentID},

@@ -136,15 +136,21 @@ public class CreateStudent extends AppCompatActivity {
                 studentFirstName = getStringfromEditText(firstName);
                 studentLastName = getStringfromEditText(lastName);
 
-                Student newStudent = new Student(studentFirstName,studentLastName);
-                newStudent.setStudentImage(studentImageBitmap);
-                newStudent.setEmailList(emailList);
-                newStudent.setPhoneNumberList(phoneList);
+                if (!studentFirstName.equals("") || !studentLastName.equals("")) {
+                    Student newStudent = new Student(studentFirstName, studentLastName);
+                    newStudent.setStudentImage(studentImageBitmap);
+                    newStudent.setEmailList(emailList);
+                    newStudent.setPhoneNumberList(phoneList);
 
-                Databases.getInstance().addStudenttoDatabase(newStudent,getApplicationContext());
+                    Databases.getInstance().addStudenttoDatabase(newStudent, getApplicationContext());
 
-                Intent goBack = new Intent(CreateStudent.this,TeacherPage.class);
-                startActivity(goBack);
+                    Intent goBack = new Intent(CreateStudent.this, TeacherPage.class);
+                    startActivity(goBack);
+                }
+                else
+                {
+                    Toast.makeText(getApplicationContext(), "Invalid First/Last Name", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -253,8 +259,6 @@ public class CreateStudent extends AppCompatActivity {
                 startActivity(goback);
             }
         });
-
-
 
 
     }

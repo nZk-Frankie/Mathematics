@@ -39,6 +39,13 @@ public class Student{
 
     }
 
+    public Student (String ID, String firstName, String lastName)
+    {
+        this.ID=ID;
+        this.firstName=firstName;
+        this.lastName = lastName;
+    }
+
     private Bitmap loadImage(String imageName)
     {
         Bitmap studentImage=null;
