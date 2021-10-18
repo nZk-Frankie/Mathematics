@@ -6,6 +6,7 @@ public class TESTHISTORY {
 
         public static class Cols {
             public static final String REFERENCE_KEY = "reference_key";
+            public static final String SCORE = "FINAL_SCORE";
             public static final String DATE = "DATE";
             public static final String TIME = "TIME";
         }

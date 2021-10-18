@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Mathematics</string>
+
+    <string-array name="sortBy">
+        <item>Highest - Lowest</item>
+        <item>Lowest - Highest</item>
+    </string-array>
 </resources>

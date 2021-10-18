@@ -55,6 +55,46 @@ public class StudentViewMore extends AppCompatActivity {
     private static final int REQUEST_PHOTO_FROM_PIXBAY = 3;
 
     @Override
+    protected void onSaveInstanceState(Bundle savedInstanceState)
+    {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putString("strID",strID);
+        savedInstanceState.putStringArrayList("emailList", (ArrayList<String>) emailList);
+        savedInstanceState.putStringArrayList("phoneList", (ArrayList<String>) phoneList);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState)
+    {
+        super.onRestoreInstanceState(savedInstanceState);
+        strID = savedInstanceState.getString("strID");
+        emailList = (List<String>) savedInstanceState.getStringArrayList("emailList");
+        phoneList = (List<String>)savedInstanceState.getStringArrayList("phoneList");
+
+        EMAILItemHolderAdapter itemHolder = new EMAILItemHolderAdapter(emailList);
+        emailRV.setLayoutManager(new LinearLayoutManager(StudentViewMore.this));
+        emailRV.setAdapter(itemHolder);
+
+        PHONEADAPTER phoneadapter = new PHONEADAPTER(phoneList);
+        phoneRV.setLayoutManager(new LinearLayoutManager(StudentViewMore.this));
+        phoneRV.setAdapter(phoneadapter);
+
+
+    }
+    private void getStudentBitmap()
+    {
+        String imagePath = "data/data/au.edu.curtin.assignment.mathematics/app_studentImageDirectory/";
+        try {
+            File file = new File(imagePath,strID+".jpg");
+            Bitmap image = BitmapFactory.decodeStream(new FileInputStream(file));
+            studentImageBitmap = image;
+            viewMoreStudentImage.setImageBitmap(image);
+        }catch (FileNotFoundException ex)
+        {
+            ex.printStackTrace();
+        }
+    }
+    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -77,15 +117,11 @@ public class StudentViewMore extends AppCompatActivity {
 
         //get the data
         strID = getIntent().getExtras().getString("studentID");
-        Log.d("1212", "onCreate: " + strID);
 
         student = Databases.getInstance().findStudentWithID(strID);
 
         emailList = student.getEmailList();
         phoneList = student.getPhoneNumberList();
-
-        Log.d("121", "onCreate: "+emailList.size());
-        Log.d("12121", "onCreate: "+phoneList.size());
 
         EMAILItemHolderAdapter itemHolder = new EMAILItemHolderAdapter(emailList);
         emailRV.setLayoutManager(new LinearLayoutManager(StudentViewMore.this));
@@ -98,7 +134,12 @@ public class StudentViewMore extends AppCompatActivity {
 
         firstName.setText(student.getFirstName());
         lastName.setText(student.getLastName());
-        viewMoreStudentImage.setImageBitmap(student.getStudentImage());
+        getStudentBitmap();
+
+        if (studentImageBitmap == null)
+        {
+            Log.d("12863821", "onCreate:NULLLLLLLLLLLLLLLLLL");
+        }
 
 
         back.setOnClickListener(new View.OnClickListener() {

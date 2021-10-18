@@ -3,15 +3,41 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Mathematics/app/src/main/res/layout-land/activity_main.xml" value="0.38333333333333336" />
+        <entry key="..\:/Mathematics/app/src/main/res/layout-land/more_detail_student.xml" value="0.38333333333333336" />
+        <entry key="..\:/Mathematics/app/src/main/res/layout-land/pixbay_layout.xml" value="0.38333333333333336" />
+        <entry key="..\:/Mathematics/app/src/main/res/layout-land/send_result_data.xml" value="0.38333333333333336" />
+        <entry key="..\:/Mathematics/app/src/main/res/layout-land/spinner_student_name.xml" value="0.3770833333333333" />
+        <entry key="..\:/Mathematics/app/src/main/res/layout-land/student_choose.xml" value="0.38333333333333336" />
+        <entry key="..\:/Mathematics/app/src/main/res/layout-land/student_registration.xml" value="0.38333333333333336" />
+        <entry key="..\:/Mathematics/app/src/main/res/layout-land/student_test_page.xml" value="0.38333333333333336" />
+        <entry key="..\:/Mathematics/app/src/main/res/layout-land/student_view.xml" value="0.38333333333333336" />
+        <entry key="..\:/Mathematics/app/src/main/res/layout-land/teacher_landing.xml" value="0.38333333333333336" />
+        <entry key="..\:/Mathematics/app/src/main/res/layout-land/teacher_page.xml" value="0.38333333333333336" />
+        <entry key="..\:/Mathematics/app/src/main/res/layout-land/test_results.xml" value="0.38333333333333336" />
+        <entry key="..\:/Mathematics/app/src/main/res/layout-land/view_test.xml" value="0.33" />
+        <entry key="..\:/Mathematics/app/src/main/res/layout-sw600dp/activity_main.xml" value="0.275" />
+        <entry key="..\:/Mathematics/app/src/main/res/layout-sw600dp/each_list_create.xml" value="0.34375" />
+        <entry key="..\:/Mathematics/app/src/main/res/layout-sw600dp/more_detail_student.xml" value="0.34375" />
+        <entry key="..\:/Mathematics/app/src/main/res/layout-sw600dp/pixbay_layout.xml" value="0.34375" />
+        <entry key="..\:/Mathematics/app/src/main/res/layout-sw600dp/send_data_each.xml" value="0.34375" />
+        <entry key="..\:/Mathematics/app/src/main/res/layout-sw600dp/send_result_data.xml" value="0.34375" />
+        <entry key="..\:/Mathematics/app/src/main/res/layout-sw600dp/spinner_student_name.xml" value="0.34375" />
+        <entry key="..\:/Mathematics/app/src/main/res/layout-sw600dp/student_choose.xml" value="0.34375" />
+        <entry key="..\:/Mathematics/app/src/main/res/layout-sw600dp/student_registration.xml" value="0.34375" />
+        <entry key="..\:/Mathematics/app/src/main/res/layout-sw600dp/student_test_page.xml" value="0.34375" />
         <entry key="..\:/Mathematics/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
         <entry key="..\:/Mathematics/app/src/main/res/layout/answer_fragment_layout.xml" value="0.275" />
         <entry key="..\:/Mathematics/app/src/main/res/layout/each_list_create.xml" value="0.36666666666666664" />
+        <entry key="..\:/Mathematics/app/src/main/res/layout/email_preview.xml" value="0.275" />
         <entry key="..\:/Mathematics/app/src/main/res/layout/menu.xml" value="0.36666666666666664" />
         <entry key="..\:/Mathematics/app/src/main/res/layout/menu_drop.xml" value="0.20520833333333333" />
         <entry key="..\:/Mathematics/app/src/main/res/layout/menu_drop_viewmore.xml" value="0.275" />
-        <entry key="..\:/Mathematics/app/src/main/res/layout/more_detail_student.xml" value="0.154296875" />
+        <entry key="..\:/Mathematics/app/src/main/res/layout/more_detail_student.xml" value="0.75" />
         <entry key="..\:/Mathematics/app/src/main/res/layout/pixbay_each.xml" value="0.15390625" />
         <entry key="..\:/Mathematics/app/src/main/res/layout/pixbay_layout.xml" value="0.33" />
+        <entry key="..\:/Mathematics/app/src/main/res/layout/send_data_each.xml" value="0.33" />
+        <entry key="..\:/Mathematics/app/src/main/res/layout/send_result_data.xml" value="0.33" />
         <entry key="..\:/Mathematics/app/src/main/res/layout/spinner_student_name.xml" value="0.275" />
         <entry key="..\:/Mathematics/app/src/main/res/layout/student_choose.xml" value="0.275" />
         <entry key="..\:/Mathematics/app/src/main/res/layout/student_registration.xml" value="0.29691032403918616" />
@@ -20,7 +46,9 @@
         <entry key="..\:/Mathematics/app/src/main/res/layout/student_view_each.xml" value="0.275" />
         <entry key="..\:/Mathematics/app/src/main/res/layout/teacher_landing.xml" value="0.20520833333333333" />
         <entry key="..\:/Mathematics/app/src/main/res/layout/teacher_page.xml" value="0.36666666666666664" />
-        <entry key="..\:/Mathematics/app/src/main/res/layout/view_test.xml" value="0.20520833333333333" />
+        <entry key="..\:/Mathematics/app/src/main/res/layout/test_results.xml" value="0.33" />
+        <entry key="..\:/Mathematics/app/src/main/res/layout/view_test.xml" value="0.24492385786802032" />
+        <entry key="..\:/Mathematics/app/src/main/res/layout/view_test_each.xml" value="0.5" />
         <entry key="..\:/Mathematics/app/src/main/res/xml/files.xml" value="0.36666666666666664" />
       </map>
     </option>

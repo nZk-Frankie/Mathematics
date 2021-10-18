@@ -11,6 +11,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,6 +57,33 @@ public class PixbayDownloader extends AppCompatActivity {
     private List<Bitmap> pictureList = new ArrayList<>();
 
     private GridView imageGridViewer;
+
+    @Override
+    protected void onSaveInstanceState(Bundle x)
+    {
+        super.onSaveInstanceState(x);
+        x.putParcelableArrayList("imageKey", (ArrayList<? extends Parcelable>) pictureList);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle x)
+    {
+        super.onRestoreInstanceState(x);
+        pictureList =  x.getParcelableArrayList("imageKey");
+        ImageAdapter adapter = new ImageAdapter(pictureList);
+        imageGridViewer.setAdapter(adapter);
+        imageGridViewer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                saveBitmap(pictureList.get(i),"pixbay.png");
+
+                Intent goback = new Intent(PixbayDownloader.this,CreateStudent.class);
+                setResult(Activity.RESULT_OK,goback);
+                finish();
+            }
+        });
+
+    }
 
     @Override
     protected void onCreate(Bundle x)

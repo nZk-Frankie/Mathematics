@@ -3,6 +3,7 @@ package au.edu.curtin.assignment.mathematics;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,6 +27,7 @@ public class StudentLanding extends AppCompatActivity {
 
     Button back, proceed;
     Spinner studentSpinner;
+    List<Student> studentList;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,8 +37,9 @@ public class StudentLanding extends AppCompatActivity {
         back =  (Button) findViewById(R.id.backButtonFromStudentLanding);
         proceed = (Button) findViewById(R.id.proceedButtonStudent);
         studentSpinner = (Spinner) findViewById(R.id.studentSpinnerObject);
+        studentList = Databases.getInstance().loadStudentObject();
 
-        SpinnerAdapter spinnerAdapter = new SpinnerAdapter(this,R.layout.spinner_student_name, Databases.getInstance().loadStudentObject());
+        SpinnerAdapter spinnerAdapter = new SpinnerAdapter(this,R.layout.spinner_student_name, studentList);
         studentSpinner.setAdapter(spinnerAdapter);
 
         back.setOnClickListener(new View.OnClickListener() {
@@ -50,7 +54,14 @@ public class StudentLanding extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(StudentLanding.this,StudentTestPage.class);
-                startActivity(intent);
+                if (studentList.size()>0) {
+                    intent.putExtra("refID", studentList.get(studentSpinner.getSelectedItemPosition()).getID());
+                    startActivity(intent);
+                }
+                else
+                {
+                    Toast.makeText(getApplicationContext(), "Invalid Student", Toast.LENGTH_SHORT).show();
+                }
 
             }
         });

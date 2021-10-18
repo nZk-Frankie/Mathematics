@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class TeacherPage extends AppCompatActivity {
 
-    private Button createStudent, viewStudent, viewTestHistory, back;
+    private Button createStudent, viewStudent, viewTestHistory, back, send;
     @Override
     protected void onCreate(Bundle x)
     {
@@ -20,6 +20,7 @@ public class TeacherPage extends AppCompatActivity {
         createStudent = (Button) findViewById(R.id.registerStudentTeacher);
         viewStudent = (Button) findViewById(R.id.viewStudentTeacher);
         viewTestHistory = (Button) findViewById(R.id.viewTestHistoryTeacher);
+        send = (Button)findViewById(R.id.sendRecordButton) ;
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,7 +51,16 @@ public class TeacherPage extends AppCompatActivity {
         viewTestHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent proceed = new Intent(TeacherPage.this,ViewTest.class);
+                startActivity(proceed);
+            }
+        });
 
+        send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent pr = new Intent(TeacherPage.this,DataSend.class);
+                startActivity(pr);
             }
         });
 

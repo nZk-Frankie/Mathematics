@@ -20,6 +20,7 @@ import au.edu.curtin.assignment.mathematics.db.DB_HELPER;
 import au.edu.curtin.assignment.mathematics.db.EMAIL;
 import au.edu.curtin.assignment.mathematics.db.PHONE;
 import au.edu.curtin.assignment.mathematics.db.StudentSchema;
+import au.edu.curtin.assignment.mathematics.db.TESTHISTORY;
 
 public class Databases {
     SQLiteDatabase database;
@@ -37,6 +38,70 @@ public class Databases {
 
     public Databases()
     {
+    }
+
+    public void addTestHistorytoDB(String refID, String Score, String Date, String Time)
+    {
+        ContentValues cv = new ContentValues();
+        cv.put(TESTHISTORY.TEST_HISTORY.Cols.REFERENCE_KEY,refID);
+        cv.put(TESTHISTORY.TEST_HISTORY.Cols.SCORE,Score);
+        cv.put(TESTHISTORY.TEST_HISTORY.Cols.DATE,Date);
+        cv.put(TESTHISTORY.TEST_HISTORY.Cols.TIME,Time);
+
+        database.insert(TESTHISTORY.TEST_HISTORY.DBNAME,null,cv);
+    }
+
+    public List<TestHistory> loadTest()
+    {
+        List<TestHistory> results = new ArrayList<>();
+
+        TestHistoryCursor testHistoryCursor = new TestHistoryCursor(
+                this.database.query(TESTHISTORY.TEST_HISTORY.DBNAME,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null)
+        );
+        try{
+            testHistoryCursor.moveToFirst();
+            while (!testHistoryCursor.isAfterLast())
+            {
+                results.add(testHistoryCursor.getTestHistory());
+                testHistoryCursor.moveToNext();
+            }
+        }finally {
+            testHistoryCursor.close();
+        }
+
+        return results;
+    }
+
+    public List<TestHistory> findStudentTestHistory(String ID)
+    {
+        List<TestHistory> testHistoryList = new ArrayList<>();
+        TestHistoryCursor testHistoryCursor= new TestHistoryCursor(
+                this.database.query(TESTHISTORY.TEST_HISTORY.DBNAME,
+                null,
+                TESTHISTORY.TEST_HISTORY.Cols.REFERENCE_KEY+" = ?",
+                new String[]{ID},
+                null,
+                null,
+                null));
+
+        try{
+            testHistoryCursor.moveToFirst();
+            while (!testHistoryCursor.isAfterLast())
+            {
+                testHistoryList.add(testHistoryCursor.getTestHistory());
+                testHistoryCursor.moveToNext();
+            }
+        }finally {
+            testHistoryCursor.close();
+        }
+
+        return testHistoryList;
     }
 
     public Student findStudentWithID(String ID)
@@ -249,7 +314,6 @@ public class Databases {
         FileOutputStream fileOutputStream = null;
         try {
             fileOutputStream = new FileOutputStream(pixbayPath);
-
             Image.compress(Bitmap.CompressFormat.PNG,100,fileOutputStream);
         }catch (FileNotFoundException ex)
         {
@@ -303,6 +367,23 @@ public class Databases {
         public String getPhone()
         {
             return getString(getColumnIndex(PHONE.PHONE_LIST.Cols.PHONE_NUMBER));
+        }
+    }
+
+    private class TestHistoryCursor extends CursorWrapper{
+        public TestHistoryCursor(Cursor cursor)
+        {
+            super(cursor);
+        }
+
+        public TestHistory getTestHistory()
+        {
+            String ref = getString(getColumnIndex(TESTHISTORY.TEST_HISTORY.Cols.REFERENCE_KEY));
+            String date = getString(getColumnIndex(TESTHISTORY.TEST_HISTORY.Cols.DATE));
+            String time = getString(getColumnIndex(TESTHISTORY.TEST_HISTORY.Cols.TIME));
+            String results = getString(getColumnIndex(TESTHISTORY.TEST_HISTORY.Cols.SCORE));
+
+            return new TestHistory(ref,Integer.parseInt(results),date,time);
         }
     }
 

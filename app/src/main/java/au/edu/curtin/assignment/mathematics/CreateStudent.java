@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -128,7 +129,6 @@ public class CreateStudent extends AppCompatActivity {
             ActivityCompat.requestPermissions(CreateStudent.this,new String[]{Manifest.permission.READ_CONTACTS},REQUEST_CONTACT);
         }
 
-        testData();
 
         addStudent.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -420,6 +420,41 @@ public class CreateStudent extends AppCompatActivity {
         }
 
         return res;
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outstate)
+    {
+        super.onSaveInstanceState(outstate);
+        outstate.putParcelable("image",studentImageBitmap);
+        outstate.putStringArrayList("phoneList", (ArrayList<String>) phoneList);
+        outstate.putStringArrayList("emailList",(ArrayList<String>) emailList);
+    }
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState)
+    {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        studentImageBitmap = (Bitmap) savedInstanceState.getParcelable("image");
+        phoneList = (List<String>) savedInstanceState.getStringArrayList("phoneList");
+        emailList = (List<String>)savedInstanceState.getStringArrayList("emailList");
+        if (studentImageBitmap == null)
+        {
+            IMAGE.setImageResource(R.drawable.images);
+        }
+        else {
+            IMAGE.setImageBitmap(studentImageBitmap);
+        }
+
+        EMAILItemHolderAdapter emailItemHolderAdapter = new EMAILItemHolderAdapter(emailList);
+        studentEmailList.setLayoutManager(new LinearLayoutManager(CreateStudent.this));
+        studentEmailList.setAdapter(emailItemHolderAdapter);
+
+        PHONEADAPTER phoneadapter = new PHONEADAPTER(phoneList);
+        studentPhoneList.setLayoutManager(new LinearLayoutManager(CreateStudent.this));
+        studentPhoneList.setAdapter(phoneadapter);
+
+
     }
 
     private class EMAILItemHolderAdapter extends RecyclerView.Adapter<EMAILItemHolder>

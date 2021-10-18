@@ -32,6 +32,7 @@ public class DB_HELPER extends SQLiteOpenHelper {
 
         sqLiteDatabase.execSQL("CREATE TABLE "+ TESTHISTORY.TEST_HISTORY.DBNAME+ "(" +
                 TESTHISTORY.TEST_HISTORY.Cols.REFERENCE_KEY + " TEXT, " +
+                TESTHISTORY.TEST_HISTORY.Cols.SCORE + " TEXT, "+
                 TESTHISTORY.TEST_HISTORY.Cols.DATE + " TEXT," +
                 TESTHISTORY.TEST_HISTORY.Cols.TIME + " TEXT)");
     }

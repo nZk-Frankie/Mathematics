@@ -11,8 +11,8 @@
 
         <ImageView
             android:id="@+id/imageViewStudentViewMore"
-            android:layout_width="110dp"
-            android:layout_height="110dp"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:visibility="visible"
@@ -24,25 +24,14 @@
             android:id="@+id/textView5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Creating A New Student"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="280dp"
+            android:text="Student Details"
             android:textColor="@color/black"
             android:textSize="24sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/backFromStudentViewMore"
-            app:layout_constraintStart_toEndOf="@+id/imageViewStudentViewMore"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/importStudentTeacherCreate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:minHeight="48dp"
-            android:text="Import"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/backFromStudentViewMore" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/backFromStudentViewMore"
@@ -62,7 +51,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="12dp"
             android:minHeight="48dp"
-            android:text="Upload"
+            android:text="Change"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageViewStudentViewMore" />
 
@@ -142,7 +131,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_begin="1379dp" />
+            app:layout_constraintGuide_begin="1439dp" />
 
         <EditText
             android:id="@+id/editTextViewMoreStudentPhone"
@@ -187,10 +176,10 @@
             android:id="@+id/saveInfoStudentViewMore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="112dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginStart="272dp"
+            android:layout_marginTop="20dp"
             android:minHeight="48dp"
-            android:text="Register Student"
+            android:text="Save Information"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/RVPhoneViewMore" />
 

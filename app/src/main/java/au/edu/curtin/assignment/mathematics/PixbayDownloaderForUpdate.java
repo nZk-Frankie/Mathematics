@@ -58,6 +58,18 @@ public class PixbayDownloaderForUpdate extends AppCompatActivity {
     private GridView imageGridViewer;
 
     @Override
+    protected void onSaveInstanceState(Bundle x)
+    {
+        super.onSaveInstanceState(x);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle x)
+    {
+        super.onRestoreInstanceState(x);
+    }
+
+    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pixbay_layout);

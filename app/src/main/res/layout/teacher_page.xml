@@ -22,10 +22,10 @@
         style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
         android:layout_width="172dp"
         android:layout_height="48dp"
-        android:layout_marginStart="116dp"
         android:layout_marginTop="44dp"
         android:text="VIEW STUDENT"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/registerStudentTeacher"
+        app:layout_constraintStart_toStartOf="@+id/registerStudentTeacher"
         app:layout_constraintTop_toBottomOf="@+id/registerStudentTeacher" />
 
     <Button
@@ -34,10 +34,21 @@
         android:layout_width="172dp"
         android:layout_height="48dp"
         android:layout_marginTop="52dp"
-        android:layout_marginEnd="120dp"
         android:text="View Test History"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/viewStudentTeacher"
+        app:layout_constraintStart_toStartOf="@+id/viewStudentTeacher"
         app:layout_constraintTop_toBottomOf="@+id/viewStudentTeacher" />
+
+    <Button
+        android:id="@+id/sendRecordButton"
+        style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
+        android:layout_width="172dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="52dp"
+        android:text="Send Record"
+        app:layout_constraintEnd_toEndOf="@+id/viewTestHistoryTeacher"
+        app:layout_constraintStart_toStartOf="@+id/viewTestHistoryTeacher"
+        app:layout_constraintTop_toBottomOf="@+id/viewTestHistoryTeacher" />
 
     <Button
         android:id="@+id/backTeacherPage"
@@ -55,7 +66,7 @@
         android:id="@+id/textView7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="52dp"
         android:layout_marginTop="104dp"
         android:text="Welcome to the Admin Page"
         android:textSize="24sp"

@@ -22,15 +22,18 @@
             <meta-data android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/files"/>
         </provider>
-        <activity android:name=".TeacherLanding"/>
-        <activity android:name=".TeacherPage"/>
-        <activity android:name=".CreateStudent"/>
-        <activity android:name=".PixbayDownloader"/>
-        <activity android:name=".ViewStudent"/>
-        <activity android:name=".StudentViewMore"/>
-        <activity android:name=".PixbayDownloaderForUpdate"/>
-        <activity android:name=".StudentLanding"/>
-        <activity android:name=".StudentTestPage"/>
+        <activity android:name=".TeacherLanding" />
+        <activity android:name=".TeacherPage" />
+        <activity android:name=".CreateStudent" />
+        <activity android:name=".PixbayDownloader" />
+        <activity android:name=".ViewStudent" />
+        <activity android:name=".StudentViewMore" />
+        <activity android:name=".PixbayDownloaderForUpdate" />
+        <activity android:name=".StudentLanding" />
+        <activity android:name=".StudentTestPage" android:configChanges="orientation|screenSize" />
+        <activity android:name=".TestResults" />
+        <activity android:name=".ViewTest" />
+        <activity android:name=".DataSend" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
